@@ -2594,14 +2594,6 @@ function showManualPanel() {
   if (startBtn) startBtn.style.display = 'none';
   document.querySelectorAll('.btn-chase').forEach(b => b.disabled = true);
 
-  // Signaler à scores.html que la sélection est en cours → masquer les scores temporairement
-  try {
-    const cur = JSON.parse(localStorage.getItem('pp_live_scores') || '{}');
-    cur.selecting = true;
-    cur.ts = Date.now();
-    localStorage.setItem('pp_live_scores', JSON.stringify(cur));
-  } catch(e) {}
-
   const container = document.getElementById('arena-manual-teams');
   if (!container) return;
 
@@ -2739,8 +2731,7 @@ function confirmManualSelection() {
   const startBtn = document.getElementById('arena-start-btn');
   if (startBtn) { startBtn.style.display = 'inline-block'; startBtn.textContent = '▶ Démarrer'; }
   document.querySelectorAll('.btn-chase').forEach(b => b.disabled = true);
-  // Repousser les scores sans le flag selecting → scores.html réaffiche normalement
-  pushScoresToStorage();
+}
 
 const TEAM_COLORS = [
   { bg: 'rgba(99,102,241,0.15)', border: 'rgba(99,102,241,0.5)', text: '#818cf8' },
