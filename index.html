@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PARKOUR-PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a26;
+  --border: #2a2a40;
+  --accent: #ff4d1c;
+  --accent2: #ff8c00;
+  --text: #f0f0f8;
+  --muted: #6b6b8a;
+  --info: #3b82f6;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+/* ── GRID BG ── */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image:
+    linear-gradient(rgba(255,77,28,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,77,28,.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events:none;
+}
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+}
+
+/* ── GLOW ORBS ── */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.12;
+  animation: orbFloat 8s ease-in-out infinite;
+}
+.orb-1 { width:400px; height:400px; background:var(--accent); top:-100px; left:-100px; animation-delay:0s; }
+.orb-2 { width:300px; height:300px; background:var(--info); bottom:-80px; right:-80px; animation-delay:-3s; }
+@keyframes orbFloat {
+  0%,100% { transform: translate(0,0); }
+  50% { transform: translate(20px,20px); }
+}
+
+/* ── CONTENT ── */
+.landing {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+/* ── HEADER ── */
+.header { text-align: center; animation: fadeUp .8s cubic-bezier(.16,1,.3,1) both; }
+
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 10vw, 6rem);
+  letter-spacing: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 50px rgba(255,77,28,.35));
+  line-height: 1;
+}
+
+.tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: .5rem;
+}
+
+.version {
+  display: inline-block;
+  margin-top: .75rem;
+  background: rgba(255,77,28,.08);
+  border: 1px solid rgba(255,77,28,.2);
+  border-radius: 20px;
+  padding: .2rem .8rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+/* ── CARDS ── */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  width: 100%;
+  animation: fadeUp .8s .2s cubic-bezier(.16,1,.3,1) both;
+}
+@media (max-width:560px) { .cards { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem 1.75rem 1.75rem;
+  cursor: pointer;
+  transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s, border-color .3s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.card::before {
+  content:'';
+  position:absolute; inset:0; border-radius:20px;
+  opacity:0; transition: opacity .3s;
+}
+.card.online::before { background: radial-gradient(ellipse at 20% 20%, rgba(255,77,28,.1), transparent 65%); }
+.card.local::before  { background: radial-gradient(ellipse at 20% 20%, rgba(59,130,246,.1), transparent 65%); }
+
+.card:hover { transform: translateY(-5px); }
+.card:hover::before { opacity:1; }
+.card.online:hover { box-shadow: 0 0 0 1.5px var(--accent), 0 24px 48px rgba(255,77,28,.18); border-color:transparent; }
+.card.local:hover  { box-shadow: 0 0 0 1.5px var(--info),  0 24px 48px rgba(59,130,246,.18); border-color:transparent; }
+
+.card:active { transform: translateY(-2px) scale(.98); }
+
+.card-badge {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: .18rem .55rem;
+  border-radius: 4px;
+}
+.card.online .card-badge { background:rgba(34,197,94,.1); color:#22c55e; border:1px solid rgba(34,197,94,.2); }
+.card.local  .card-badge { background:rgba(59,130,246,.1); color:var(--info); border:1px solid rgba(59,130,246,.2); }
+
+.card-icon { font-size: 2.4rem; margin-bottom: .9rem; display:block; }
+
+.card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.55rem;
+  letter-spacing: 2px;
+  margin-bottom: .35rem;
+}
+.card.online .card-title { color: var(--accent); }
+.card.local  .card-title { color: var(--info); }
+
+.card-desc {
+  color: var(--muted);
+  font-size: .8rem;
+  line-height: 1.55;
+  flex: 1;
+  margin-bottom: 1.5rem;
+}
+
+.card-features {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  margin-bottom: 1.6rem;
+}
+.card-feature {
+  font-size: .76rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.card-feature::before {
+  content:'✓';
+  font-size:.6rem;
+  width:15px; height:15px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.card.online .card-feature::before { background:rgba(255,77,28,.15); color:var(--accent); }
+.card.local  .card-feature::before { background:rgba(59,130,246,.15); color:var(--info); }
+
+.card-btn {
+  width:100%;
+  padding:.85rem;
+  border:none;
+  border-radius:10px;
+  font-family:'DM Sans',sans-serif;
+  font-size:.88rem;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition: opacity .2s, transform .15s;
+  display:flex; align-items:center; justify-content:center; gap:.5rem;
+  pointer-events:none; /* le clic est géré sur la card */
+}
+.card.online .card-btn { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; }
+.card.local  .card-btn { background:var(--info); color:white; }
+
+.card:hover .card-btn { opacity:.9; }
+
+/* ── FOOTER ── */
+.footer {
+  font-family:'JetBrains Mono',monospace;
+  font-size:.62rem;
+  color:var(--muted);
+  letter-spacing:1px;
+  text-align:center;
+  animation: fadeUp .8s .4s both;
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="landing">
+
+  <div class="header">
+    <div class="logo">PARKOUR-PRO</div>
+    <div class="tagline">// compétition & performance</div>
+    <div class="version">v3.0</div>
+  </div>
+
+  <div class="cards">
+
+    <div class="card online" onclick="window.location.href='parkour.html'">
+      <div class="card-badge">En ligne</div>
+      <span class="card-icon">🌐</span>
+      <div class="card-title">Mode En ligne</div>
+      <div class="card-desc">Base de données centralisée. Accès depuis n'importe quel appareil, historique cloud.</div>
+      <div class="card-features">
+        <div class="card-feature">Sync multi-appareils</div>
+        <div class="card-feature">Historique cloud</div>
+        <div class="card-feature">Accès sur demande validée</div>
+      </div>
+      <div class="card-btn">Accéder →</div>
+    </div>
+
+    <div class="card local" onclick="window.location.href='local.html'">
+      <div class="card-badge">Hors-ligne</div>
+      <span class="card-icon">💾</span>
+      <div class="card-title">Mode Local</div>
+      <div class="card-desc">Tout stocké dans un fichier <code style="font-family:'JetBrains Mono',monospace;font-size:.72rem">.database</code> sur votre machine. Zéro réseau requis.</div>
+      <div class="card-features">
+        <div class="card-feature">Fonctionne hors-ligne</div>
+        <div class="card-feature">Données chez vous</div>
+        <div class="card-feature">Aucune inscription</div>
+      </div>
+      <div class="card-btn">Ouvrir →</div>
+    </div>
+
+  </div>
+
+  <div class="footer">parkour-pro.nathabu.fr &nbsp;·&nbsp; nathbu92.github.io/parkour-pro</div>
+
+</div>
+
+</body>
+</html>
