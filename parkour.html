@@ -1187,23 +1187,42 @@
 
     <!-- ── CONNEXION ── -->
     <div id="auth-panel-login" class="auth-form">
-      <div class="input-group">
-        <label>Nom d'utilisateur</label>
-        <input type="text" id="auth-username" placeholder="ton_pseudo" autocomplete="username" autocapitalize="none">
-      </div>
-      <div class="input-group">
-        <label>Code secret (6 chiffres)</label>
-        <div class="code-inputs">
-          <input type="text" maxlength="1" inputmode="numeric" class="code-digit" id="c0">
-          <input type="text" maxlength="1" inputmode="numeric" class="code-digit" id="c1">
-          <input type="text" maxlength="1" inputmode="numeric" class="code-digit" id="c2">
-          <input type="text" maxlength="1" inputmode="numeric" class="code-digit" id="c3">
-          <input type="text" maxlength="1" inputmode="numeric" class="code-digit" id="c4">
-          <input type="text" maxlength="1" inputmode="numeric" class="code-digit" id="c5">
+      <form id="auth-real-form" autocomplete="on" onsubmit="event.preventDefault(); handleAuth()">
+
+        <div class="input-group">
+          <label>Nom d'utilisateur</label>
+          <input type="text"
+            id="auth-username"
+            name="username"
+            placeholder="ton_pseudo"
+            autocomplete="username"
+            autocapitalize="none"
+            autocorrect="off"
+            spellcheck="false">
         </div>
-      </div>
-      <div class="auth-error" id="auth-error"></div>
-      <button class="btn-primary" id="auth-submit" onclick="handleAuth()">Se connecter</button>
+
+        <div class="input-group">
+          <label>Code secret (6 chiffres)</label>
+          <input type="password"
+            id="auth-code-hidden"
+            name="password"
+            placeholder="••••••"
+            autocomplete="current-password"
+            inputmode="numeric"
+            maxlength="6"
+            style="letter-spacing:6px;font-size:1.2rem;font-family:'JetBrains Mono',monospace"
+            onkeydown="if(event.key==='Enter') handleAuth()">
+        </div>
+
+        <div class="auth-error" id="auth-error"></div>
+
+        <label style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--muted);cursor:pointer;margin-bottom:.5rem;margin-top:-.25rem">
+          <input type="checkbox" id="auth-remember" checked style="accent-color:var(--accent);width:15px;height:15px">
+          Rester connecté (30 jours)
+        </label>
+
+        <button type="submit" class="btn-primary" id="auth-submit">Se connecter</button>
+      </form>
     </div>
 
     <!-- ── DEMANDE D'ACCÈS ── -->
@@ -1971,6 +1990,38 @@ const LOADING_PHRASES = [
   'Activation des traceurs...',
 ];
 
+// ═══════════════════════════════════════════════
+// SESSION TOKEN — Rester connecté
+// ═══════════════════════════════════════════════
+const SESSION_KEY = 'pp_session_v1';
+const SESSION_DURATION_DAYS = 30;
+
+function saveSession(username, code, isAdmin) {
+  const remember = document.getElementById('auth-remember')?.checked !== false;
+  if (!remember) return; // pas de "rester connecté" → session uniquement en mémoire
+  const expires = Date.now() + SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000;
+  const payload = { username, code, isAdmin, expires };
+  // Encode en base64 pour éviter lecture directe (pas du vrai chiffrement, mais dissuasif)
+  localStorage.setItem(SESSION_KEY, btoa(JSON.stringify(payload)));
+}
+
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    const payload = JSON.parse(atob(raw));
+    if (!payload.expires || Date.now() > payload.expires) {
+      localStorage.removeItem(SESSION_KEY);
+      return null;
+    }
+    return payload;
+  } catch(e) { localStorage.removeItem(SESSION_KEY); return null; }
+}
+
+function clearSession() {
+  localStorage.removeItem(SESSION_KEY);
+}
+
 window.onload = () => {
   const phrases = LOADING_PHRASES;
   const msgEl = document.getElementById('loading-msg');
@@ -1982,10 +2033,23 @@ window.onload = () => {
       setTimeout(next, 320);
     } else {
       document.getElementById('loading-overlay').style.display = 'none';
-      showPage('page-auth');
+      // Vérifier session existante
+      const session = loadSession();
+      if (session) {
+        // Session valide → entrer directement sans re-valider le serveur
+        // (le token local suffit, le serveur validera à la prochaine vraie action)
+        currentUser = { username: session.username, isAdmin: session.isAdmin || false, _code: session.code };
+        enterApp();
+      } else {
+        showPage('page-auth');
+        // Pré-remplir si autocomplete navigateur
+        setTimeout(syncHiddenToVisual, 300);
+      }
     }
   }
   setTimeout(next, 320);
+  // Binder les digits visuels
+  bindCodeDigits();
 };
 
 function showPage(id) {
@@ -2220,25 +2284,44 @@ document.querySelectorAll('.code-digit').forEach((input, i) => {
 });
 
 function getCode() {
-  return ['c0','c1','c2','c3','c4','c5'].map(id => document.getElementById(id).value).join('');
+  return (document.getElementById('auth-code-hidden')?.value || '').replace(/\D/g, '');
 }
+
+// bindCodeDigits et syncCode* ne sont plus nécessaires (champ unique)
+function bindCodeDigits() {}
+function syncCodeFromHidden() {}
+function syncVisualToHidden() {}
+function syncHiddenToVisual() {}
 
 async function handleAuth() {
   const username = document.getElementById('auth-username').value.trim().toLowerCase();
   const code = getCode();
-  const errEl = document.getElementById('auth-error');
 
   if (!username) { showError('Entre un nom d\'utilisateur.'); return; }
   if (code.length !== 6) { showError('Le code doit faire 6 chiffres.'); return; }
 
-  // Mode Apps Script — connexion uniquement (inscription = demande d'accès validée par admin)
   document.getElementById('auth-submit').disabled = true;
   document.getElementById('auth-submit').textContent = 'Connexion…';
   const res = await apiPost({ action: 'login', username, code });
   document.getElementById('auth-submit').disabled = false;
   document.getElementById('auth-submit').textContent = 'Se connecter';
   if (!res || !res.success) { showError(res?.error || 'Identifiants incorrects ou compte non encore validé.'); return; }
+
   currentUser = { username, isAdmin: res.isAdmin || false, _code: code };
+  saveSession(username, code, res.isAdmin || false);
+
+  // ── Proposer la sauvegarde dans Google/navigateur (Credential Management API) ──
+  if (window.PasswordCredential) {
+    try {
+      const cred = new PasswordCredential({
+        id:       username,
+        password: code,
+        name:     username,
+      });
+      await navigator.credentials.store(cred);
+    } catch(e) { /* silencieux si refusé */ }
+  }
+
   enterApp();
 }
 
@@ -2354,11 +2437,13 @@ async function handleChangeCode() {
 
   // Mettre à jour le code en session
   currentUser._code = newCode;
+  saveSession(currentUser.username, newCode, currentUser.isAdmin); // renouveler le token
   clearSettingsCode('oc', 'nc', 'cc');
   toast('✅ Code secret mis à jour !', 'success');
 }
 
 function logout() {
+  clearSession();
   currentUser = null;
   window.location.href = 'index.html';
 }
