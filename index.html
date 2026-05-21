@@ -31,8 +31,6 @@ body {
   padding: 2rem;
   overflow-x: hidden;
 }
-
-/* ── GRID BG ── */
 body::before {
   content:'';
   position:fixed; inset:0;
@@ -50,103 +48,68 @@ body::after {
   pointer-events:none;
   z-index:0;
 }
-
-/* ── GLOW ORBS ── */
 .orb {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(80px);
-  pointer-events: none;
-  opacity: 0.12;
-  animation: orbFloat 8s ease-in-out infinite;
-  z-index:0;
+  position: fixed; border-radius: 50%;
+  filter: blur(80px); pointer-events: none;
+  opacity: 0.12; animation: orbFloat 8s ease-in-out infinite; z-index:0;
 }
 .orb-1 { width:400px; height:400px; background:var(--accent); top:-100px; left:-100px; animation-delay:0s; }
 .orb-2 { width:300px; height:300px; background:var(--info); bottom:-80px; right:-80px; animation-delay:-3s; }
-@keyframes orbFloat {
-  0%,100% { transform: translate(0,0); }
-  50% { transform: translate(20px,20px); }
-}
+@keyframes orbFloat { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,20px)} }
 
-/* ── CONTENT ── */
 .landing {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 760px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2.5rem;
+  position: relative; z-index: 1;
+  width: 100%; max-width: 760px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 2.5rem;
 }
 
-/* ── HEADER ── */
+/* HEADER */
 .header { text-align: center; animation: fadeUp .8s cubic-bezier(.16,1,.3,1) both; }
-
 .logo {
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(3.5rem, 10vw, 6rem);
   letter-spacing: 8px;
   background: linear-gradient(135deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 50px rgba(255,77,28,.35));
-  line-height: 1;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 50px rgba(255,77,28,.35)); line-height: 1;
 }
 .tagline {
   font-family: 'JetBrains Mono', monospace;
-  font-size: .7rem;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-top: .5rem;
+  font-size: .7rem; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--muted); margin-top: .5rem;
 }
 .version {
-  display: inline-block;
-  margin-top: .75rem;
-  background: rgba(255,77,28,.08);
-  border: 1px solid rgba(255,77,28,.2);
-  border-radius: 20px;
-  padding: .2rem .8rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .6rem;
-  color: var(--accent);
-  letter-spacing: 1px;
+  display: inline-block; margin-top: .75rem;
+  background: rgba(255,77,28,.08); border: 1px solid rgba(255,77,28,.2);
+  border-radius: 20px; padding: .2rem .8rem;
+  font-family: 'JetBrains Mono', monospace; font-size: .6rem;
+  color: var(--accent); letter-spacing: 1px;
 }
 
-/* ── CARDS GRILLE ── */
+/* CARDS */
 .cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-  width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.25rem; width: 100%;
   animation: fadeUp .8s .2s cubic-bezier(.16,1,.3,1) both;
 }
 @media (max-width:600px) { .cards { grid-template-columns: 1fr; } }
 
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 2rem 1.75rem 1.75rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 2rem 1.75rem 1.75rem;
   cursor: pointer;
   transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s, border-color .3s;
-  position: relative;
-  overflow: hidden;
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  position: relative; overflow: hidden;
+  text-decoration: none; display: flex; flex-direction: column;
+  user-select: none; -webkit-tap-highlight-color: transparent;
 }
 .card::before {
-  content:'';
-  position:absolute; inset:0; border-radius:20px;
+  content:''; position:absolute; inset:0; border-radius:20px;
   opacity:0; transition: opacity .3s;
 }
 .card.online::before { background: radial-gradient(ellipse at 20% 20%, rgba(255,77,28,.1), transparent 65%); }
 .card.local::before  { background: radial-gradient(ellipse at 20% 20%, rgba(59,130,246,.1), transparent 65%); }
-
 .card:hover { transform: translateY(-5px); }
 .card:hover::before { opacity:1; }
 .card.online:hover { box-shadow: 0 0 0 1.5px var(--accent), 0 24px 48px rgba(255,77,28,.18); border-color:transparent; }
@@ -154,53 +117,29 @@ body::after {
 .card:active { transform: translateY(-2px) scale(.98); }
 
 .card-badge {
-  position: absolute;
-  top: 1rem; right: 1rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .58rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: .18rem .55rem;
-  border-radius: 4px;
+  position: absolute; top: 1rem; right: 1rem;
+  font-family: 'JetBrains Mono', monospace; font-size: .58rem;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: .18rem .55rem; border-radius: 4px;
 }
 .card.online .card-badge { background:rgba(34,197,94,.1); color:#22c55e; border:1px solid rgba(34,197,94,.2); }
 .card.local  .card-badge { background:rgba(59,130,246,.1); color:var(--info); border:1px solid rgba(59,130,246,.2); }
 
 .card-icon { font-size: 2.4rem; margin-bottom: .9rem; display:block; }
-.card-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.55rem;
-  letter-spacing: 2px;
-  margin-bottom: .35rem;
-}
+.card-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.55rem; letter-spacing: 2px; margin-bottom: .35rem; }
 .card.online .card-title { color: var(--accent); }
 .card.local  .card-title { color: var(--info); }
-
-.card-desc {
-  color: var(--muted);
-  font-size: .8rem;
-  line-height: 1.55;
-  flex: 1;
-  margin-bottom: 1.5rem;
-}
-.card-features {
-  display: flex; flex-direction: column; gap: .3rem; margin-bottom: 1.6rem;
-}
-.card-feature {
-  font-size: .76rem; color: var(--text);
-  display: flex; align-items: center; gap: .5rem;
-}
+.card-desc { color: var(--muted); font-size: .8rem; line-height: 1.55; flex: 1; margin-bottom: 1.5rem; }
+.card-features { display: flex; flex-direction: column; gap: .3rem; margin-bottom: 1.6rem; }
+.card-feature { font-size: .76rem; color: var(--text); display: flex; align-items: center; gap: .5rem; }
 .card-feature::before {
-  content:'✓'; font-size:.6rem;
-  width:15px; height:15px; border-radius:50%;
+  content:'✓'; font-size:.6rem; width:15px; height:15px; border-radius:50%;
   display:flex; align-items:center; justify-content:center; flex-shrink:0;
 }
 .card.online .card-feature::before { background:rgba(255,77,28,.15); color:var(--accent); }
 .card.local  .card-feature::before { background:rgba(59,130,246,.15); color:var(--info); }
-
 .card-btn {
-  width:100%; padding:.85rem;
-  border:none; border-radius:10px;
+  width:100%; padding:.85rem; border:none; border-radius:10px;
   font-family:'DM Sans',sans-serif; font-size:.88rem; font-weight:600;
   letter-spacing:1px; text-transform:uppercase; cursor:pointer;
   transition: opacity .2s, transform .15s;
@@ -211,21 +150,16 @@ body::after {
 .card.local  .card-btn { background:var(--info); color:white; }
 .card:hover .card-btn { opacity:.9; }
 
-/* ── CARTE TÉLÉCHARGEMENT (pleine largeur) ── */
+/* DOWNLOAD CARD */
 .download-card {
-  width: 100%;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 1.75rem 2rem;
-  position: relative;
-  overflow: hidden;
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 1.75rem 2rem;
+  position: relative; overflow: hidden;
   animation: fadeUp .8s .35s cubic-bezier(.16,1,.3,1) both;
   transition: border-color .3s, box-shadow .3s;
 }
 .download-card::before {
-  content:'';
-  position:absolute; inset:0;
+  content:''; position:absolute; inset:0;
   background: radial-gradient(ellipse at 10% 50%, rgba(34,197,94,.07), transparent 60%);
   pointer-events:none;
 }
@@ -233,169 +167,85 @@ body::after {
   border-color: rgba(34,197,94,.3);
   box-shadow: 0 0 0 1px rgba(34,197,94,.15), 0 20px 40px rgba(34,197,94,.06);
 }
-
-.download-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
+.download-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
 .download-icon { font-size: 2rem; }
 .download-title-block { flex: 1; }
-.download-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.45rem;
-  letter-spacing: 2px;
-  color: var(--green);
-}
-.download-subtitle {
-  font-size: .76rem;
-  color: var(--muted);
-  margin-top: .1rem;
-}
+.download-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.45rem; letter-spacing: 2px; color: var(--green); }
+.download-subtitle { font-size: .76rem; color: var(--muted); margin-top: .1rem; }
 .download-badge {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .58rem; letter-spacing: 1px; text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace; font-size: .58rem;
+  letter-spacing: 1px; text-transform: uppercase;
   padding: .2rem .6rem; border-radius: 4px;
-  background: rgba(34,197,94,.1); color: var(--green);
-  border: 1px solid rgba(34,197,94,.2);
+  background: rgba(34,197,94,.1); color: var(--green); border: 1px solid rgba(34,197,94,.2);
 }
-
-.download-btns {
-  display: flex;
-  gap: .85rem;
-  flex-wrap: wrap;
-}
+.download-btns { display: flex; gap: .85rem; flex-wrap: wrap; }
 
 .dl-btn {
-  flex: 1;
-  min-width: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .55rem;
-  padding: .85rem 1.25rem;
-  border-radius: 12px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .85rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
+  flex: 1; min-width: 140px;
+  display: flex; align-items: center; justify-content: center; gap: .55rem;
+  padding: .85rem 1.25rem; border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 600;
+  cursor: pointer; text-decoration: none;
   transition: transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s, opacity .2s;
-  border: none;
-  position: relative;
-  overflow: hidden;
+  border: none; position: relative; overflow: hidden;
 }
-.dl-btn::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: rgba(255,255,255,0);
-  transition: background .2s;
-}
-.dl-btn:hover::after { background: rgba(255,255,255,.06); }
+.dl-btn::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,0); transition:background .2s; }
+.dl-btn:hover::after { background:rgba(255,255,255,.06); }
 .dl-btn:hover { transform: translateY(-3px); }
 .dl-btn:active { transform: translateY(-1px) scale(.98); }
-
-.dl-btn.exe {
-  background: linear-gradient(135deg, var(--green), #16a34a);
-  color: white;
-  box-shadow: 0 4px 20px rgba(34,197,94,.25);
-}
+.dl-btn.exe { background: linear-gradient(135deg, var(--green), #16a34a); color: white; box-shadow: 0 4px 20px rgba(34,197,94,.25); }
 .dl-btn.exe:hover { box-shadow: 0 8px 32px rgba(34,197,94,.38); }
-
-.dl-btn.zip {
-  background: var(--surface2);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
+.dl-btn.zip { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
 .dl-btn.zip:hover { border-color: rgba(34,197,94,.3); }
+.dl-btn.disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
 
 .dl-btn-icon {
-  width: 28px; height: 28px;
-  border-radius: 8px;
+  width: 28px; height: 28px; border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
-  font-size: .95rem;
-  flex-shrink: 0;
+  font-size: .95rem; flex-shrink: 0;
 }
 .dl-btn.exe .dl-btn-icon { background: rgba(255,255,255,.15); }
 .dl-btn.zip .dl-btn-icon { background: rgba(255,255,255,.05); }
-
 .dl-btn-text { display: flex; flex-direction: column; align-items: flex-start; }
 .dl-btn-label { font-size: .82rem; font-weight: 600; line-height: 1.1; }
 .dl-btn-meta  { font-family: 'JetBrains Mono', monospace; font-size: .58rem; color: rgba(255,255,255,.55); letter-spacing: .5px; margin-top: .1rem; }
 .dl-btn.zip .dl-btn-meta { color: var(--muted); }
 
-/* ── BARRE REPO GITHUB ── */
-.repo-bar {
-  width: 100%;
-  animation: fadeUp .8s .5s cubic-bezier(.16,1,.3,1) both;
-}
-
+/* REPO BAR */
+.repo-bar { width: 100%; animation: fadeUp .8s .5s cubic-bezier(.16,1,.3,1) both; }
 .repo-link {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: .9rem 1.25rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  text-decoration: none;
+  display: flex; align-items: center; gap: 1rem;
+  padding: .9rem 1.25rem; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; text-decoration: none;
   transition: border-color .25s, background .25s, transform .25s cubic-bezier(.16,1,.3,1);
-  cursor: pointer;
 }
-.repo-link:hover {
-  border-color: rgba(255,255,255,.15);
-  background: var(--surface2);
-  transform: translateY(-2px);
-}
+.repo-link:hover { border-color: rgba(255,255,255,.15); background: var(--surface2); transform: translateY(-2px); }
 .repo-link:active { transform: scale(.99); }
-
 .repo-gh-icon {
   width: 34px; height: 34px; flex-shrink: 0;
-  background: rgba(255,255,255,.06);
-  border-radius: 10px;
+  background: rgba(255,255,255,.06); border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
 }
 .repo-gh-icon svg { width: 18px; height: 18px; fill: var(--text); opacity: .7; }
-
 .repo-info { flex: 1; min-width: 0; }
-.repo-name {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .8rem; color: var(--text);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
+.repo-name { font-family: 'JetBrains Mono', monospace; font-size: .8rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .repo-desc { font-size: .7rem; color: var(--muted); margin-top: .1rem; }
-
-.repo-right {
-  display: flex; align-items: center; gap: .6rem; flex-shrink: 0;
-}
+.repo-right { display: flex; align-items: center; gap: .6rem; flex-shrink: 0; }
 .repo-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .58rem; letter-spacing: 1px; text-transform: uppercase;
-  padding: .18rem .55rem; border-radius: 4px;
-  background: rgba(255,255,255,.05); color: var(--muted);
-  border: 1px solid rgba(255,255,255,.07);
+  font-family: 'JetBrains Mono', monospace; font-size: .58rem;
+  letter-spacing: 1px; text-transform: uppercase; padding: .18rem .55rem; border-radius: 4px;
+  background: rgba(255,255,255,.05); color: var(--muted); border: 1px solid rgba(255,255,255,.07);
 }
-.repo-arrow {
-  color: var(--muted); font-size: .9rem;
-  transition: transform .2s, color .2s;
-}
+.repo-arrow { color: var(--muted); font-size: .9rem; transition: transform .2s, color .2s; }
 .repo-link:hover .repo-arrow { transform: translateX(4px); color: var(--text); }
 
-/* ── FOOTER ── */
 .footer {
-  font-family:'JetBrains Mono',monospace;
-  font-size:.6rem;
-  color: rgba(107,107,138,.5);
-  letter-spacing:1px;
-  text-align:center;
+  font-family:'JetBrains Mono',monospace; font-size:.6rem;
+  color: rgba(107,107,138,.5); letter-spacing:1px; text-align:center;
   animation: fadeUp .8s .6s both;
 }
 
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(20px); }
-  to   { opacity:1; transform:translateY(0); }
-}
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 </style>
 </head>
 <body>
@@ -405,14 +255,12 @@ body::after {
 
 <div class="landing">
 
-  <!-- HEADER -->
   <div class="header">
     <div class="logo">PARKOUR-PRO</div>
     <div class="tagline">// compétition & performance</div>
-    <div class="version">v3.0</div>
+    <div class="version" id="version-badge">v3.0</div>
   </div>
 
-  <!-- CARDS MODE -->
   <div class="cards">
     <div class="card online" onclick="window.location.href='parkour.html'">
       <div class="card-badge">En ligne</div>
@@ -426,7 +274,6 @@ body::after {
       </div>
       <div class="card-btn">Accéder →</div>
     </div>
-
     <div class="card local" onclick="window.location.href='local.html'">
       <div class="card-badge">Hors-ligne</div>
       <span class="card-icon">💾</span>
@@ -441,7 +288,6 @@ body::after {
     </div>
   </div>
 
-  <!-- CARTE TÉLÉCHARGEMENT -->
   <div class="download-card">
     <div class="download-header">
       <div class="download-icon">⬇</div>
@@ -451,104 +297,33 @@ body::after {
       </div>
       <div class="download-badge">Desktop</div>
     </div>
-
     <div class="download-btns">
-
-      <button class="dl-btn exe" id="btn-exe" onclick="downloadAsset('exe')" disabled>
+      <a class="dl-btn exe disabled" id="btn-exe" href="#">
         <div class="dl-btn-icon" id="icon-exe">⏳</div>
         <div class="dl-btn-text">
-          <span class="dl-btn-label" id="label-exe">Chargement...</span>
+          <span class="dl-btn-label" id="label-exe">Chargement…</span>
           <span class="dl-btn-meta" id="meta-exe">Installeur Windows · x64</span>
         </div>
-      </button>
-
-      <button class="dl-btn zip" id="btn-zip" onclick="downloadAsset('zip')" disabled>
+      </a>
+      <a class="dl-btn zip disabled" id="btn-zip" href="#">
         <div class="dl-btn-icon" id="icon-zip">⏳</div>
         <div class="dl-btn-text">
-          <span class="dl-btn-label" id="label-zip">Chargement...</span>
+          <span class="dl-btn-label" id="label-zip">Chargement…</span>
           <span class="dl-btn-meta" id="meta-zip">Version portable · sans install</span>
         </div>
-      </button>
-
+      </a>
     </div>
-
-    <script>
-      const REPO = 'nathbu92/chronoapp';
-      const API  = `https://api.github.com/repos/${REPO}/releases/latest`;
-      let urls = { exe: null, zip: null };
-
-      function formatSize(bytes) {
-        if (!bytes) return '';
-        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' Ko';
-        return (bytes / (1024 * 1024)).toFixed(1) + ' Mo';
-      }
-
-      function setReady(type, url, size) {
-        urls[type] = url;
-        const btn = document.getElementById('btn-' + type);
-        btn.disabled = false;
-        document.getElementById('icon-' + type).textContent = type === 'exe' ? '🪟' : '📦';
-        document.getElementById('label-' + type).textContent = type === 'exe' ? 'Télécharger .exe' : 'Télécharger .zip';
-        document.getElementById('meta-' + type).textContent =
-          (type === 'exe' ? 'Installeur Windows · x64' : 'Version portable · sans install') +
-          (size ? ' · ' + size : '');
-      }
-
-      function setError(type) {
-        const btn = document.getElementById('btn-' + type);
-        btn.disabled = true;
-        document.getElementById('icon-' + type).textContent = '✕';
-        document.getElementById('label-' + type).textContent = 'Non disponible';
-        document.getElementById('meta-' + type).textContent = 'Pas encore publié';
-        btn.style.opacity = '0.35';
-        btn.style.cursor = 'not-allowed';
-      }
-
-      function downloadAsset(type) {
-        if (!urls[type]) return;
-        const a = document.createElement('a');
-        a.href = urls[type];
-        a.download = '';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
-
-      fetch(API, { headers: { 'Accept': 'application/vnd.github+json' } })
-        .then(r => r.json())
-        .then(release => {
-          const assets = release.assets || [];
-          const tag = (release.tag_name || '').replace(/^v/, '');
-
-          const exeAsset = assets.find(a => a.name && a.name.toLowerCase().endsWith('.exe'));
-          const zipAsset = assets.find(a => a.name && a.name.toLowerCase().endsWith('.zip'));
-
-          if (exeAsset) setReady('exe', exeAsset.browser_download_url, formatSize(exeAsset.size));
-          else setError('exe');
-
-          if (zipAsset) setReady('zip', zipAsset.browser_download_url, formatSize(zipAsset.size));
-          else setError('zip');
-
-          if (tag) {
-            const verEl = document.querySelector('.version');
-            if (verEl) verEl.textContent = 'v' + tag;
-          }
-        })
-        .catch(() => { setError('exe'); setError('zip'); });
-    </script>
   </div>
 
-  <!-- BARRE GITHUB -->
   <div class="repo-bar">
-    <a class="repo-link" href="https://github.com/nathbu92/chronoapp" target="_blank">
+    <a class="repo-link" href="https://github.com/nathbu92/parkourpro" target="_blank">
       <div class="repo-gh-icon">
-        <!-- GitHub SVG icon -->
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
         </svg>
       </div>
       <div class="repo-info">
-        <div class="repo-name">nathbu92 / chronoapp</div>
+        <div class="repo-name">nathbu92 / parkourpro</div>
         <div class="repo-desc">Code source · issues · contributions</div>
       </div>
       <div class="repo-right">
@@ -558,9 +333,69 @@ body::after {
     </a>
   </div>
 
-  <!-- FOOTER -->
-  <div class="footer">parkour-pro.nathabu.fr &nbsp;·&nbsp; nathbu92.github.io/chronoapp</div>
+  <div class="footer">parkour-pro.nathabu.fr &nbsp;·&nbsp; nathbu92.github.io/parkourpro</div>
 
 </div>
+
+<script>
+  const API = 'https://api.github.com/repos/nathbu92/parkourpro/releases/latest';
+
+  function fmt(bytes) {
+    if (!bytes) return '';
+    return bytes < 1024*1024
+      ? (bytes/1024).toFixed(0) + ' Ko'
+      : (bytes/(1024*1024)).toFixed(1) + ' Mo';
+  }
+
+  function setReady(type, url, size) {
+    const btn = document.getElementById('btn-' + type);
+    btn.href = url;
+    btn.classList.remove('disabled');
+    document.getElementById('icon-' + type).textContent = type === 'exe' ? '🪟' : '📦';
+    document.getElementById('label-' + type).textContent = type === 'exe' ? 'Télécharger .exe' : 'Télécharger .zip';
+    document.getElementById('meta-' + type).textContent =
+      (type === 'exe' ? 'Installeur Windows · x64' : 'Version portable · sans install') +
+      (size ? ' · ' + size : '');
+  }
+
+  function setError(type) {
+    const btn = document.getElementById('btn-' + type);
+    btn.classList.add('disabled');
+    document.getElementById('icon-' + type).textContent = '✕';
+    document.getElementById('label-' + type).textContent = 'Non disponible';
+    document.getElementById('meta-' + type).textContent = 'Pas encore publié';
+  }
+
+  fetch(API, { headers: { 'Accept': 'application/vnd.github+json' } })
+    .then(r => { if (!r.ok) throw new Error('no release'); return r.json(); })
+    .then(release => {
+      const assets = release.assets || [];
+      const tag = (release.tag_name || '').replace(/^v/, '');
+
+      // Filtre strict : fichiers contenant "Setup" ou "setup" uniquement
+      // exclut automatiquement "Source code (zip)" et "Source code (tar.gz)"
+      const exeAsset = assets.find(a =>
+        a.name &&
+        a.name.toLowerCase().includes('setup') &&
+        a.name.toLowerCase().endsWith('.exe')
+      );
+      const zipAsset = assets.find(a =>
+        a.name &&
+        a.name.toLowerCase().includes('setup') &&
+        a.name.toLowerCase().endsWith('.zip')
+      );
+
+      if (exeAsset) setReady('exe', exeAsset.browser_download_url, fmt(exeAsset.size));
+      else setError('exe');
+
+      if (zipAsset) setReady('zip', zipAsset.browser_download_url, fmt(zipAsset.size));
+      else setError('zip');
+
+      if (tag) {
+        document.getElementById('version-badge').textContent = 'v' + tag;
+      }
+    })
+    .catch(() => { setError('exe'); setError('zip'); });
+</script>
 </body>
 </html>
